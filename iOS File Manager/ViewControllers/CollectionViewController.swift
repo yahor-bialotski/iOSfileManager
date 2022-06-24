@@ -11,7 +11,7 @@ extension FilesViewController: UICollectionViewDelegate {
     var collectionViewCell: String {
         "cell"
     }
-    
+
     func setUpCollectionView() {
          filesСollectionView.delegate = self
         filesСollectionView.dataSource  = self

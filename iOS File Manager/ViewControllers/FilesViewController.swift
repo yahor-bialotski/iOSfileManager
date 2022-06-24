@@ -11,21 +11,24 @@ class FilesViewController: UIViewController {
     
     var elements = [Element]()
     
+    @IBOutlet weak var switchViewButton: UISegmentedControl!
+
     @IBOutlet weak var filesСollectionView: UICollectionView!
-    
     @IBOutlet weak var foldersListTableView: UITableView!
     
     var currentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         navigationItem.rightBarButtonItem = UIBarButtonItem(systemItem: .add, primaryAction: nil, menu: menuTitle)
-        
+
         setUpTableView()
         reloadFolderContent()
         
         setUpCollectionView()
+        
+        checkPassword()
     }
     
     private func setUpTableView() {
@@ -53,6 +56,24 @@ class FilesViewController: UIViewController {
         return UIMenu(title: "Choose action", image: nil, identifier: nil, options: [], children: menuItems)
     }
     
+    enum DiplayViewMode {
+        case tableView
+        case scrollView
+    }
+    
+    @IBAction func handleViewChangeSwitcher(_ sender: UISegmentedControl) {
+        switch switchViewButton.selectedSegmentIndex {
+        case 0:
+            filesСollectionView.isHidden = true
+            foldersListTableView.isHidden = false
+        case 1:
+            foldersListTableView.isHidden = true
+            filesСollectionView.isHidden = false
+        default:
+            break
+        }
+    }
+    
     // MARK: - Upload image
     
     func uploadImage() {
@@ -67,9 +88,7 @@ class FilesViewController: UIViewController {
     
     func createImage(_ image: UIImage, name: String) {
         guard let currentDirectory = currentDirectory,
-              let dataImage = image.jpegData(compressionQuality: 1) else {
-            return
-        }
+              let dataImage = image.jpegData(compressionQuality: 1) else { return }
         
         let newImagePath = currentDirectory.appendingPathComponent(name)
         
@@ -104,15 +123,13 @@ class FilesViewController: UIViewController {
     }
     
     func createNewFolder(name: String) {
-        guard let currentFolderDirectoryURL = FileManager.default.urls(for: .documentDirectory,
-                                                                       in: .userDomainMask).first else { return }
+        guard let currentFolderDirectoryURL = currentDirectory else { return }
         
         let newFolderPath = currentFolderDirectoryURL.appendingPathComponent(name)
         
         try? FileManager.default.createDirectory(at: newFolderPath,
                                                  withIntermediateDirectories: false,
                                                  attributes: nil)
-        print(currentFolderDirectoryURL)
     }
     
     private func reloadFolderContent() {
@@ -128,26 +145,115 @@ class FilesViewController: UIViewController {
         
         foldersListTableView.reloadData()
         filesСollectionView.reloadData()
-    }  
+    }
+    
+    // MARK: - Key chain alerts
+    
+    func checkPassword() {
+        if KeyChainService.shared.getPassword() == nil {
+            showCreatePasswordAlert()
+        }
+        else {
+            showEnterPasswordAlert()
+        }
+    }
+    
+    func showCreatePasswordAlert() {
+        let alertController = UIAlertController(title: "Create password",
+                                                message: nil,
+                                                preferredStyle: .alert)
+        
+        alertController.addTextField()
+        alertController.addTextField()
+        
+        alertController.textFields?.first?.isSecureTextEntry = true
+        alertController.textFields?.last?.isSecureTextEntry = true
+        alertController.textFields?.first?.placeholder = "New password"
+        alertController.textFields?.last?.placeholder = "Confirm password"
+        
+        
+        let acceptAction = UIAlertAction(title: "Ok", style: .default) { _ in
+            guard let password = alertController.textFields?.first?.text else { return }
+            guard let confirmedPassword = alertController.textFields?.last?.text else { return }
+            
+            if password != confirmedPassword || confirmedPassword.isEmpty {
+                self.showCreatePasswordAlert()
+            } else {
+                self.createPassword(password: password)
+            }
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .destructive) { _ in
+            exit(0)
+        }
+        
+        alertController.addAction(acceptAction)
+        alertController.addAction(cancelAction)
+        
+        present(alertController, animated: true)
+    }
+    
+    func createPassword(password: String) {
+        KeyChainService.shared.setPassword(value: password)
+    }
+
+    func showEnterPasswordAlert() {
+        let alertController = UIAlertController(title: "Access denied!",
+                                                message: "Please, enter password",
+                                                preferredStyle: .alert)
+        
+        alertController.addTextField()
+        
+        alertController.textFields?.first?.isSecureTextEntry = true
+        alertController.textFields?.first?.placeholder = "Password"
+        
+        let acceptAction = UIAlertAction(title: "Ok", style: .default) { _ in
+            guard let passwordText = alertController.textFields?.first?.text else { return }
+            
+            if passwordText != KeyChainService.shared.getPassword() {
+                self.showEnterPasswordAlert()
+            }
+        }
+
+        let cancelAction = UIAlertAction(title: "Cancel", style: .destructive) { _ in
+            exit(0)
+        }
+        
+        alertController.addAction(acceptAction)
+        alertController.addAction(cancelAction)
+        
+        present(alertController, animated: true)
+    }
 }
+
 // MARK: - Nagigation
 
 extension FilesViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         handleCellTap(indexPath: indexPath)
-    }
-    
-    func handleCellTap(indexPath: IndexPath) {
-        guard let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "FilesVC") as? FilesViewController else {
-            return
-        }
         
+        
+    }
+    func handleCellTap(indexPath: IndexPath) {
+        guard let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "FilesVC") as? FilesViewController else { return }
+
         let element = elements[indexPath.row]
-        viewController.currentDirectory = element.path
-         
-        self.navigationController?.pushViewController(viewController, animated: true)
+        switch element.type {
+        case .folder:
+            viewController.currentDirectory = element.path
+
+            self.navigationController?.pushViewController(viewController, animated: true)
+            
+        case .photo:
+            guard let scrollViewController = UIStoryboard(name: "Main", bundle: nil)
+                .instantiateViewController(withIdentifier: "ScrollVC") as? ScrollViewController else { return }
+            
+            navigationController?.pushViewController(scrollViewController, animated: true)
+            scrollViewController.receivedImageURL = element.path
+        }
     }
 }
+
 // MARK: - Table view
 
 extension FilesViewController: UITableViewDataSource {
@@ -165,9 +271,7 @@ extension FilesViewController: UITableViewDataSource {
     }
     
     private func getDeictoryCell(_ tableView: UITableView, element: Element) -> UITableViewCell {
-        guard let tableViewCell = tableView.dequeueReusableCell(withIdentifier: FoldersListViewCell.id) as? FoldersListViewCell else {
-            return UITableViewCell()
-        }
+        guard let tableViewCell = tableView.dequeueReusableCell(withIdentifier: FoldersListViewCell.id) as? FoldersListViewCell else { return UITableViewCell() }
         
         tableViewCell.updateData(element: element)
         return tableViewCell
@@ -181,17 +285,15 @@ extension FilesViewController: UITableViewDataSource {
 extension FilesViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         guard let image = info[.originalImage] as? UIImage,
-              let imageURL = (info[.imageURL] as? URL)?.lastPathComponent else {
-            return
-        }
+              let imageURL = (info[.imageURL] as? URL)?.lastPathComponent else { return }
         
         createImage(image, name: imageURL)
         
         picker.dismiss(animated: true)
     }
-    
+}
+     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true)
     }
-}
- 
+
