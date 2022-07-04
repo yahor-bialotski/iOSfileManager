@@ -1,0 +1,523 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 55;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		3F926756FF3AEB5E59E44C31 /* Pods_iOS_File_Manager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00A06A061430A73244FCC3B6 /* Pods_iOS_File_Manager.framework */; };
+		7417BDE72859E2FC00B5330A /* ScrollViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7417BDE62859E2FC00B5330A /* ScrollViewController.swift */; };
+		7417BDEA285C702700B5330A /* UserDefaultService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7417BDE9285C702700B5330A /* UserDefaultService.swift */; };
+		7417BDEF286070EB00B5330A /* KeyChainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7417BDEE286070EB00B5330A /* KeyChainService.swift */; };
+		746B0B562846BFBC00C412B1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746B0B552846BFBC00C412B1 /* AppDelegate.swift */; };
+		746B0B582846BFBC00C412B1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746B0B572846BFBC00C412B1 /* SceneDelegate.swift */; };
+		746B0B5A2846BFBC00C412B1 /* FilesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746B0B592846BFBC00C412B1 /* FilesViewController.swift */; };
+		746B0B5D2846BFBC00C412B1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 746B0B5B2846BFBC00C412B1 /* Main.storyboard */; };
+		746B0B5F2846BFBF00C412B1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 746B0B5E2846BFBF00C412B1 /* Assets.xcassets */; };
+		746B0B622846BFBF00C412B1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 746B0B602846BFBF00C412B1 /* LaunchScreen.storyboard */; };
+		747274E928475D2200C55787 /* foldersListViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 747274E728475D2200C55787 /* foldersListViewCell.swift */; };
+		747F0A1728574664005CF339 /* ElementCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 747F0A1628574664005CF339 /* ElementCollectionViewCell.swift */; };
+		74F34B72284F44C100401626 /* Element.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F34B71284F44C100401626 /* Element.swift */; };
+		74F34B742850A9A000401626 /* CollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F34B732850A9A000401626 /* CollectionViewController.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		00A06A061430A73244FCC3B6 /* Pods_iOS_File_Manager.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iOS_File_Manager.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5B862920E6A212FC51C65A60 /* Pods-iOS File Manager.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS File Manager.release.xcconfig"; path = "Target Support Files/Pods-iOS File Manager/Pods-iOS File Manager.release.xcconfig"; sourceTree = "<group>"; };
+		7417BDE62859E2FC00B5330A /* ScrollViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollViewController.swift; sourceTree = "<group>"; };
+		7417BDE9285C702700B5330A /* UserDefaultService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultService.swift; sourceTree = "<group>"; };
+		7417BDEE286070EB00B5330A /* KeyChainService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChainService.swift; sourceTree = "<group>"; };
+		746B0B522846BFBC00C412B1 /* iOS File Manager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "iOS File Manager.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		746B0B552846BFBC00C412B1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		746B0B572846BFBC00C412B1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		746B0B592846BFBC00C412B1 /* FilesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesViewController.swift; sourceTree = "<group>"; };
+		746B0B5C2846BFBC00C412B1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		746B0B5E2846BFBF00C412B1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		746B0B612846BFBF00C412B1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		746B0B632846BFBF00C412B1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		747274E728475D2200C55787 /* foldersListViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = foldersListViewCell.swift; sourceTree = "<group>"; };
+		747F0A1628574664005CF339 /* ElementCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElementCollectionViewCell.swift; sourceTree = "<group>"; };
+		74F34B71284F44C100401626 /* Element.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Element.swift; sourceTree = "<group>"; };
+		74F34B732850A9A000401626 /* CollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewController.swift; sourceTree = "<group>"; };
+		BCD76FF6A527523426A16599 /* Pods-iOS File Manager.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS File Manager.debug.xcconfig"; path = "Target Support Files/Pods-iOS File Manager/Pods-iOS File Manager.debug.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		746B0B4F2846BFBC00C412B1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3F926756FF3AEB5E59E44C31 /* Pods_iOS_File_Manager.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		7417BDE8285C6FAA00B5330A /* UserDefaults */ = {
+			isa = PBXGroup;
+			children = (
+				7417BDE9285C702700B5330A /* UserDefaultService.swift */,
+			);
+			path = UserDefaults;
+			sourceTree = "<group>";
+		};
+		7417BDEB28606E5800B5330A /* KeyChain */ = {
+			isa = PBXGroup;
+			children = (
+				7417BDEE286070EB00B5330A /* KeyChainService.swift */,
+			);
+			path = KeyChain;
+			sourceTree = "<group>";
+		};
+		746B0B492846BFBC00C412B1 = {
+			isa = PBXGroup;
+			children = (
+				746B0B542846BFBC00C412B1 /* iOS File Manager */,
+				746B0B532846BFBC00C412B1 /* Products */,
+				AA0461235D9DCADA8149C4F9 /* Pods */,
+				E9921418FFA5F3211DCF9E4B /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		746B0B532846BFBC00C412B1 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				746B0B522846BFBC00C412B1 /* iOS File Manager.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		746B0B542846BFBC00C412B1 /* iOS File Manager */ = {
+			isa = PBXGroup;
+			children = (
+				7417BDEB28606E5800B5330A /* KeyChain */,
+				7417BDE8285C6FAA00B5330A /* UserDefaults */,
+				74F34B70284F44A200401626 /* Models */,
+				747274E32847595500C55787 /* ViewControllers */,
+				747274E2284758F200C55787 /* Views */,
+				746B0B552846BFBC00C412B1 /* AppDelegate.swift */,
+				746B0B572846BFBC00C412B1 /* SceneDelegate.swift */,
+				746B0B5B2846BFBC00C412B1 /* Main.storyboard */,
+				746B0B5E2846BFBF00C412B1 /* Assets.xcassets */,
+				746B0B602846BFBF00C412B1 /* LaunchScreen.storyboard */,
+				746B0B632846BFBF00C412B1 /* Info.plist */,
+			);
+			path = "iOS File Manager";
+			sourceTree = "<group>";
+		};
+		747274E2284758F200C55787 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				747F0A15285745E1005CF339 /* collectionViewCells */,
+				747274E428475BE200C55787 /* foldersListView */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		747274E32847595500C55787 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				746B0B592846BFBC00C412B1 /* FilesViewController.swift */,
+				74F34B732850A9A000401626 /* CollectionViewController.swift */,
+				7417BDE62859E2FC00B5330A /* ScrollViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		747274E428475BE200C55787 /* foldersListView */ = {
+			isa = PBXGroup;
+			children = (
+				747274E728475D2200C55787 /* foldersListViewCell.swift */,
+			);
+			path = foldersListView;
+			sourceTree = "<group>";
+		};
+		747F0A15285745E1005CF339 /* collectionViewCells */ = {
+			isa = PBXGroup;
+			children = (
+				747F0A1628574664005CF339 /* ElementCollectionViewCell.swift */,
+			);
+			path = collectionViewCells;
+			sourceTree = "<group>";
+		};
+		74F34B70284F44A200401626 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				74F34B71284F44C100401626 /* Element.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		AA0461235D9DCADA8149C4F9 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				BCD76FF6A527523426A16599 /* Pods-iOS File Manager.debug.xcconfig */,
+				5B862920E6A212FC51C65A60 /* Pods-iOS File Manager.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		E9921418FFA5F3211DCF9E4B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				00A06A061430A73244FCC3B6 /* Pods_iOS_File_Manager.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		746B0B512846BFBC00C412B1 /* iOS File Manager */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 746B0B662846BFBF00C412B1 /* Build configuration list for PBXNativeTarget "iOS File Manager" */;
+			buildPhases = (
+				C7B1A5F959979518DFF90FF3 /* [CP] Check Pods Manifest.lock */,
+				746B0B4E2846BFBC00C412B1 /* Sources */,
+				746B0B4F2846BFBC00C412B1 /* Frameworks */,
+				746B0B502846BFBC00C412B1 /* Resources */,
+				2FED2128B359DA61D7AA24DD /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "iOS File Manager";
+			productName = "iOS File Manager";
+			productReference = 746B0B522846BFBC00C412B1 /* iOS File Manager.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		746B0B4A2846BFBC00C412B1 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1340;
+				LastUpgradeCheck = 1340;
+				TargetAttributes = {
+					746B0B512846BFBC00C412B1 = {
+						CreatedOnToolsVersion = 13.4;
+					};
+				};
+			};
+			buildConfigurationList = 746B0B4D2846BFBC00C412B1 /* Build configuration list for PBXProject "iOS File Manager" */;
+			compatibilityVersion = "Xcode 13.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 746B0B492846BFBC00C412B1;
+			productRefGroup = 746B0B532846BFBC00C412B1 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				746B0B512846BFBC00C412B1 /* iOS File Manager */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		746B0B502846BFBC00C412B1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				746B0B622846BFBF00C412B1 /* LaunchScreen.storyboard in Resources */,
+				746B0B5F2846BFBF00C412B1 /* Assets.xcassets in Resources */,
+				746B0B5D2846BFBC00C412B1 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		2FED2128B359DA61D7AA24DD /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-iOS File Manager/Pods-iOS File Manager-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-iOS File Manager/Pods-iOS File Manager-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-iOS File Manager/Pods-iOS File Manager-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C7B1A5F959979518DFF90FF3 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-iOS File Manager-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		746B0B4E2846BFBC00C412B1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				747F0A1728574664005CF339 /* ElementCollectionViewCell.swift in Sources */,
+				746B0B5A2846BFBC00C412B1 /* FilesViewController.swift in Sources */,
+				74F34B742850A9A000401626 /* CollectionViewController.swift in Sources */,
+				7417BDE72859E2FC00B5330A /* ScrollViewController.swift in Sources */,
+				746B0B562846BFBC00C412B1 /* AppDelegate.swift in Sources */,
+				746B0B582846BFBC00C412B1 /* SceneDelegate.swift in Sources */,
+				747274E928475D2200C55787 /* foldersListViewCell.swift in Sources */,
+				7417BDEF286070EB00B5330A /* KeyChainService.swift in Sources */,
+				7417BDEA285C702700B5330A /* UserDefaultService.swift in Sources */,
+				74F34B72284F44C100401626 /* Element.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		746B0B5B2846BFBC00C412B1 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				746B0B5C2846BFBC00C412B1 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		746B0B602846BFBF00C412B1 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				746B0B612846BFBF00C412B1 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		746B0B642846BFBF00C412B1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		746B0B652846BFBF00C412B1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		746B0B672846BFBF00C412B1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = BCD76FF6A527523426A16599 /* Pods-iOS File Manager.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "iOS File Manager/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "";
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSCameraUsageDescription = "The app needs camera to take a photo";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "The app needs this to choose photos from gallery";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "egor.iOS-File-Manager";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		746B0B682846BFBF00C412B1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5B862920E6A212FC51C65A60 /* Pods-iOS File Manager.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "iOS File Manager/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "";
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSCameraUsageDescription = "The app needs camera to take a photo";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "The app needs this to choose photos from gallery";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "egor.iOS-File-Manager";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		746B0B4D2846BFBC00C412B1 /* Build configuration list for PBXProject "iOS File Manager" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				746B0B642846BFBF00C412B1 /* Debug */,
+				746B0B652846BFBF00C412B1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		746B0B662846BFBF00C412B1 /* Build configuration list for PBXNativeTarget "iOS File Manager" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				746B0B672846BFBF00C412B1 /* Debug */,
+				746B0B682846BFBF00C412B1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 746B0B4A2846BFBC00C412B1 /* Project object */;
+}
