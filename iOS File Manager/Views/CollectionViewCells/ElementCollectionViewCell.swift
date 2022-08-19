@@ -62,9 +62,11 @@ class ElementCollectionViewCell: UICollectionViewCell {
         verticalStack.addArrangedSubview(label)
     }
     
-    func updateData(element: Element) {
+    func updateData(element: Element, isSelected: Bool) {
         updateImage(element: element)
-         
+        
+        self.backgroundColor = isSelected ? .yellow : .clear
+        
         self.label.text = element.name
     }
     

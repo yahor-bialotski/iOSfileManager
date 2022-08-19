@@ -8,8 +8,9 @@
 import UIKit
 
 class ScrollViewController: UIViewController {
+    
     var receivedImageURL: URL?
-
+    
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var scrollView: UIScrollView!
     
@@ -35,6 +36,6 @@ class ScrollViewController: UIViewController {
 
 extension ScrollViewController: UIScrollViewDelegate {
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-        imageView
+        return imageView
     }
 }

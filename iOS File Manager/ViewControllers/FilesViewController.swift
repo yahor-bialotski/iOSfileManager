@@ -6,40 +6,115 @@
 //
 
 import UIKit
+import UserNotifications
 
 class FilesViewController: UIViewController {
-    
-    var elements = [Element]()
+    var manager = ElementsManager()
     
     @IBOutlet weak var switchViewButton: UISegmentedControl!
+    var displayMode: DisplayViewMode = .tableView
 
-    @IBOutlet weak var filesСollectionView: UICollectionView!
     @IBOutlet weak var foldersListTableView: UITableView!
+    @IBOutlet weak var filesСollectionView: UICollectionView!
     
-    var currentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
+    var appMode: AppMode = .view
+    
+    var notifications = Notifications()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        setUpDisplayViewMode()
 
-        navigationItem.rightBarButtonItem = UIBarButtonItem(systemItem: .add, primaryAction: nil, menu: menuTitle)
-
+        updateViewForAppMode()
+        
         setUpTableView()
-        reloadFolderContent()
-        
         setUpCollectionView()
+        manager.reloadFolderContent()
         
-        checkPassword()
+        notifications.requestNotificationsPermisson()
+        notifications.sendLocalNotification()
+        notifications.sendAnotherLocalNotification()
     }
     
     private func setUpTableView() {
         foldersListTableView.delegate = self
         foldersListTableView.dataSource = self
-        
+        //
         foldersListTableView.register(FoldersListViewCell.classForCoder(),
                                       forCellReuseIdentifier: FoldersListViewCell.id)
     }
     
     // MARK: - Buttons
+    
+    func changeAppMode(_ mode: AppMode) {
+        self.appMode = mode
+        self.updateViewForAppMode()
+    }
+    
+    func updateViewForAppMode() {
+        switch appMode {
+        case .view:
+            viewMode()
+            manager.reloadFolderContent()
+        case .edit:
+            editMode()
+        }
+    }
+    
+    func viewMode() {
+        let editButton = UIBarButtonItem(systemItem: .edit, primaryAction: UIAction(handler: {_ in
+            self.changeAppMode(.edit)
+        }))
+        
+        let addButton = UIBarButtonItem(systemItem: .add, primaryAction: nil, menu: menuTitle)
+        
+        navigationItem.rightBarButtonItems = [editButton, addButton]
+    }
+    
+    func editMode() {
+        let cancelButton = UIBarButtonItem(systemItem: .cancel, primaryAction: UIAction(handler: {_ in
+            // viewModel.goBackToViewMode
+            self.changeAppMode(.view)
+            self.manager.selectedElements.removeAll()
+        }))
+        
+        let delButton = UIBarButtonItem(systemItem: .trash, primaryAction: UIAction(handler: {_ in
+            if !self.manager.selectedElements.isEmpty {
+                self.deleteAffirmationAlert()
+            } else {
+                return
+            }
+        }))
+        
+        self.navigationItem.rightBarButtonItems = [cancelButton, delButton]
+    }
+    
+    func deleteAffirmationAlert() {
+        let alertController = UIAlertController(title: "Delete selected items?",
+                                                message: nil,
+                                                preferredStyle: .alert)
+        
+        let createAction = UIAlertAction(title: "Ok",
+                                         style: .default) { _ in
+            
+            for element in self.manager.selectedElements {
+                try? FileManager.default.removeItem(at: element.path)
+            }
+            
+            self.manager.reloadFolderContent()
+            self.viewMode()
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel",
+                                         style: .cancel,
+                                         handler: nil)
+        
+        alertController.addAction(cancelAction)
+        alertController.addAction(createAction)
+        
+        present(alertController, animated: true)
+    }
     
     var menuItems: [UIAction] {
         return [
@@ -56,21 +131,46 @@ class FilesViewController: UIViewController {
         return UIMenu(title: "Choose action", image: nil, identifier: nil, options: [], children: menuItems)
     }
     
-    enum DiplayViewMode {
-        case tableView
-        case scrollView
-    }
-    
     @IBAction func handleViewChangeSwitcher(_ sender: UISegmentedControl) {
         switch switchViewButton.selectedSegmentIndex {
         case 0:
-            filesСollectionView.isHidden = true
-            foldersListTableView.isHidden = false
+            UserDefaultService.shared.saveDisplayMode(mode: .tableView, key: "key")
+            
+            tableViewMode()
+
         case 1:
-            foldersListTableView.isHidden = true
-            filesСollectionView.isHidden = false
+            UserDefaultService.shared.saveDisplayMode(mode: .collectionView, key: "key")
+            
+            collectionViewMode()
         default:
             break
+        }
+    }
+    
+    func collectionViewMode() {
+        switchViewButton.selectedSegmentIndex = 1
+        
+        foldersListTableView.isHidden = true
+        filesСollectionView.isHidden = false
+    }
+    
+    func tableViewMode() {
+        switchViewButton.selectedSegmentIndex = 0
+        
+        filesСollectionView.isHidden = true
+        foldersListTableView.isHidden = false
+    }
+    
+    func setUpDisplayViewMode() {
+        let mode = UserDefaultService.shared.getDisplayMode(key: "key")
+        
+        self.displayMode = mode == DisplayViewMode.tableView.rawValue ? .tableView : .collectionView
+        
+        switch displayMode {
+        case .tableView:
+            tableViewMode()
+        case .collectionView:
+            collectionViewMode()
         }
     }
     
@@ -85,17 +185,6 @@ class FilesViewController: UIViewController {
         
         present(imagePicker, animated: true)
     }
-    
-    func createImage(_ image: UIImage, name: String) {
-        guard let currentDirectory = currentDirectory,
-              let dataImage = image.jpegData(compressionQuality: 1) else { return }
-        
-        let newImagePath = currentDirectory.appendingPathComponent(name)
-        
-        try? dataImage.write(to: newImagePath)
-        
-        reloadFolderContent()
-    }
       
     func showNewFolderAlert() {
         let alertController = UIAlertController(title: "New folder",
@@ -108,10 +197,10 @@ class FilesViewController: UIViewController {
                                          style: .default) { _ in
             guard let folderName = alertController.textFields?.first?.text, !folderName.isEmpty else { return }
             
-            self.createNewFolder(name: folderName)
-            self.reloadFolderContent()
+            self.manager.createNewFolder(name: folderName)
+            self.manager.reloadFolderContent()
         }
-         
+        
         let cancelAction = UIAlertAction(title: "Cancel",
                                          style: .cancel,
                                          handler: nil)
@@ -121,127 +210,46 @@ class FilesViewController: UIViewController {
         
         present(alertController, animated: true)
     }
-    
-    func createNewFolder(name: String) {
-        guard let currentFolderDirectoryURL = currentDirectory else { return }
-        
-        let newFolderPath = currentFolderDirectoryURL.appendingPathComponent(name)
-        
-        try? FileManager.default.createDirectory(at: newFolderPath,
-                                                 withIntermediateDirectories: false,
-                                                 attributes: nil)
-    }
-    
-    private func reloadFolderContent() {
-        guard let currentDirectory = self.currentDirectory,
-              let filesURLs = try? FileManager.default.contentsOfDirectory(at: currentDirectory, includingPropertiesForKeys: nil) else { return }
-        
-        self.elements = filesURLs.map {
-            let name = $0.lastPathComponent
-        
-        let type: ElementType = name.contains(".png") || name.contains(".jpeg") ? .photo : .folder
-            return Element(name: name, path: $0, type: type)
-        }
-        
-        foldersListTableView.reloadData()
-        filesСollectionView.reloadData()
-    }
-    
-    // MARK: - Key chain alerts
-    
-    func checkPassword() {
-        if KeyChainService.shared.getPassword() == nil {
-            showCreatePasswordAlert()
-        }
-        else {
-            showEnterPasswordAlert()
-        }
-    }
-    
-    func showCreatePasswordAlert() {
-        let alertController = UIAlertController(title: "Create password",
-                                                message: nil,
-                                                preferredStyle: .alert)
-        
-        alertController.addTextField()
-        alertController.addTextField()
-        
-        alertController.textFields?.first?.isSecureTextEntry = true
-        alertController.textFields?.last?.isSecureTextEntry = true
-        alertController.textFields?.first?.placeholder = "New password"
-        alertController.textFields?.last?.placeholder = "Confirm password"
-        
-        
-        let acceptAction = UIAlertAction(title: "Ok", style: .default) { _ in
-            guard let password = alertController.textFields?.first?.text else { return }
-            guard let confirmedPassword = alertController.textFields?.last?.text else { return }
-            
-            if password != confirmedPassword || confirmedPassword.isEmpty {
-                self.showCreatePasswordAlert()
-            } else {
-                self.createPassword(password: password)
-            }
-        }
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: .destructive) { _ in
-            exit(0)
-        }
-        
-        alertController.addAction(acceptAction)
-        alertController.addAction(cancelAction)
-        
-        present(alertController, animated: true)
-    }
-    
-    func createPassword(password: String) {
-        KeyChainService.shared.setPassword(value: password)
-    }
-
-    func showEnterPasswordAlert() {
-        let alertController = UIAlertController(title: "Access denied!",
-                                                message: "Please, enter password",
-                                                preferredStyle: .alert)
-        
-        alertController.addTextField()
-        
-        alertController.textFields?.first?.isSecureTextEntry = true
-        alertController.textFields?.first?.placeholder = "Password"
-        
-        let acceptAction = UIAlertAction(title: "Ok", style: .default) { _ in
-            guard let passwordText = alertController.textFields?.first?.text else { return }
-            
-            if passwordText != KeyChainService.shared.getPassword() {
-                self.showEnterPasswordAlert()
-            }
-        }
-
-        let cancelAction = UIAlertAction(title: "Cancel", style: .destructive) { _ in
-            exit(0)
-        }
-        
-        alertController.addAction(acceptAction)
-        alertController.addAction(cancelAction)
-        
-        present(alertController, animated: true)
-    }
 }
 
-// MARK: - Nagigation
+// MARK: - Navigation
 
 extension FilesViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         handleCellTap(indexPath: indexPath)
-        
-        
     }
+    
     func handleCellTap(indexPath: IndexPath) {
+        switch appMode {
+        case .edit:
+            handleCellTapInEditMode(indexPath: indexPath)
+        case .view:
+            handleCellTapInViewMode(indexPath: indexPath)
+        }
+    }
+    
+    func handleCellTapInEditMode(indexPath: IndexPath) {
+        let element = manager.elements[indexPath.row]
+        
+        if let elementIndex = manager.selectedElements.firstIndex(where: { $0.name == element.name }) {
+            manager.selectedElements.remove(at: elementIndex)
+        }
+        else {
+            manager.selectedElements.append(element)
+        }
+        
+        manager.reloadFolderContent()
+    }
+    
+    func handleCellTapInViewMode(indexPath: IndexPath) {
         guard let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "FilesVC") as? FilesViewController else { return }
-
-        let element = elements[indexPath.row]
+        
+        let element = manager.elements[indexPath.row]
+        
         switch element.type {
         case .folder:
-            viewController.currentDirectory = element.path
-
+            viewController.manager.currentDirectory = element.path
+            
             self.navigationController?.pushViewController(viewController, animated: true)
             
         case .photo:
@@ -258,27 +266,27 @@ extension FilesViewController: UITableViewDelegate {
 
 extension FilesViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        elements.count
+        manager.elements.count
     }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let element = elements[indexPath.row]
+        let element = manager.elements[indexPath.row]
         
         switch element.type {
         case .folder, .photo:
-            return getDeictoryCell(tableView, element: element)
+            return getDerictoryCell(tableView, element: element)
         }
     }
     
-    private func getDeictoryCell(_ tableView: UITableView, element: Element) -> UITableViewCell {
+    private func getDerictoryCell(_ tableView: UITableView, element: Element) -> UITableViewCell {
         guard let tableViewCell = tableView.dequeueReusableCell(withIdentifier: FoldersListViewCell.id) as? FoldersListViewCell else { return UITableViewCell() }
         
-        tableViewCell.updateData(element: element)
+        tableViewCell.updateData(element: element, isSelected: manager.selectedElements.contains(where: { $0 == element }))
         return tableViewCell
     }
-    
+
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-            50
+        50
     }
 }
 
@@ -287,13 +295,15 @@ extension FilesViewController: UIImagePickerControllerDelegate, UINavigationCont
         guard let image = info[.originalImage] as? UIImage,
               let imageURL = (info[.imageURL] as? URL)?.lastPathComponent else { return }
         
-        createImage(image, name: imageURL)
+        manager.createImage(image, name: imageURL)
         
         picker.dismiss(animated: true)
     }
 }
-     
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        picker.dismiss(animated: true)
-    }
 
+extension FilesViewController: ElementsManageDelegate {
+    func reloadData() {
+        foldersListTableView.reloadData()
+        filesСollectionView.reloadData()
+    }
+}
