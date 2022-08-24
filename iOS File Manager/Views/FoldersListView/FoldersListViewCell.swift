@@ -14,8 +14,6 @@ class FoldersListViewCell: UITableViewCell {
     var label: UILabel!
     var elementImageView: UIImageView!
     
-    var addMode: AppMode! = .view
-    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
@@ -88,11 +86,5 @@ class FoldersListViewCell: UITableViewCell {
             image = UIImage(data: data)
         }
         self.elementImageView.image = image
-    }
-    
-    func editModeImageSettings(element: Element) {
-        elementImageView.image = UIImage(systemName: "checkmark.square.fill")
-        
-        print("click works")
     }
 }

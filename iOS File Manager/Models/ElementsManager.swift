@@ -8,11 +8,11 @@
 import Foundation
 import UIKit
 
-struct ElementsManager {
+class ElementsManager {
     var elements = [Element]()
     var selectedElements = [Element]()
     
-    var delegate: ElementsManageDelegate?
+    var delegate: ElementsManagerDelegate?
     
     var currentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
     
@@ -24,9 +24,10 @@ struct ElementsManager {
         try? FileManager.default.createDirectory(at: newFolderPath,
                                                  withIntermediateDirectories: false,
                                                  attributes: nil)
+        reloadFolderContent()
     }
     
-    mutating func createImage(_ image: UIImage, name: String) {
+    func createImage(_ image: UIImage, name: String) {
         guard let currentDirectory = currentDirectory,
               let dataImage = image.jpegData(compressionQuality: 1) else { return }
         
@@ -37,7 +38,7 @@ struct ElementsManager {
         reloadFolderContent()
     }
     
-    mutating func reloadFolderContent() {
+    func reloadFolderContent() {
         guard let currentDirectory = self.currentDirectory,
               let filesURLs = try? FileManager.default.contentsOfDirectory(at: currentDirectory, includingPropertiesForKeys: nil) else { return }
         

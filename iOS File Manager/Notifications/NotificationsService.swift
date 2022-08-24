@@ -6,8 +6,9 @@
 //
 
 import UIKit
+import UserNotifications
 
-class Notifications: UIViewController {
+class NotificationsService: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()

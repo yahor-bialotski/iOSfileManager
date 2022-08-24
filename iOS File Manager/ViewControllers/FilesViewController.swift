@@ -5,34 +5,37 @@
 //  Created by Егор Белоцкий on 1.06.22.
 //
 
+import Foundation
 import UIKit
-import UserNotifications
 
 class FilesViewController: UIViewController {
     var manager = ElementsManager()
+    var displayModeManager = DisplayModeManager()
+    var appModeManager = AppModeManager()
+    var notifications = NotificationsService()
     
     @IBOutlet weak var switchViewButton: UISegmentedControl!
-    var displayMode: DisplayViewMode = .tableView
-
     @IBOutlet weak var foldersListTableView: UITableView!
     @IBOutlet weak var filesСollectionView: UICollectionView!
-    
-    var appMode: AppMode = .view
-    
-    var notifications = Notifications()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setUpDisplayViewMode()
-
-        updateViewForAppMode()
+        manager.delegate = self
+        displayModeManager.delegate = self
+        appModeManager.delegate = self
+        
+        displayModeManager.setUpDisplayViewMode()
+        appModeManager.updateViewForAppMode()
         
         setUpTableView()
         setUpCollectionView()
         manager.reloadFolderContent()
         
         notifications.requestNotificationsPermisson()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
         notifications.sendLocalNotification()
         notifications.sendAnotherLocalNotification()
     }
@@ -40,55 +43,12 @@ class FilesViewController: UIViewController {
     private func setUpTableView() {
         foldersListTableView.delegate = self
         foldersListTableView.dataSource = self
-        //
+        
         foldersListTableView.register(FoldersListViewCell.classForCoder(),
                                       forCellReuseIdentifier: FoldersListViewCell.id)
     }
     
     // MARK: - Buttons
-    
-    func changeAppMode(_ mode: AppMode) {
-        self.appMode = mode
-        self.updateViewForAppMode()
-    }
-    
-    func updateViewForAppMode() {
-        switch appMode {
-        case .view:
-            viewMode()
-            manager.reloadFolderContent()
-        case .edit:
-            editMode()
-        }
-    }
-    
-    func viewMode() {
-        let editButton = UIBarButtonItem(systemItem: .edit, primaryAction: UIAction(handler: {_ in
-            self.changeAppMode(.edit)
-        }))
-        
-        let addButton = UIBarButtonItem(systemItem: .add, primaryAction: nil, menu: menuTitle)
-        
-        navigationItem.rightBarButtonItems = [editButton, addButton]
-    }
-    
-    func editMode() {
-        let cancelButton = UIBarButtonItem(systemItem: .cancel, primaryAction: UIAction(handler: {_ in
-            // viewModel.goBackToViewMode
-            self.changeAppMode(.view)
-            self.manager.selectedElements.removeAll()
-        }))
-        
-        let delButton = UIBarButtonItem(systemItem: .trash, primaryAction: UIAction(handler: {_ in
-            if !self.manager.selectedElements.isEmpty {
-                self.deleteAffirmationAlert()
-            } else {
-                return
-            }
-        }))
-        
-        self.navigationItem.rightBarButtonItems = [cancelButton, delButton]
-    }
     
     func deleteAffirmationAlert() {
         let alertController = UIAlertController(title: "Delete selected items?",
@@ -104,6 +64,7 @@ class FilesViewController: UIViewController {
             
             self.manager.reloadFolderContent()
             self.viewMode()
+            self.appModeManager.appMode = .view
         }
         
         let cancelAction = UIAlertAction(title: "Cancel",
@@ -144,33 +105,6 @@ class FilesViewController: UIViewController {
             collectionViewMode()
         default:
             break
-        }
-    }
-    
-    func collectionViewMode() {
-        switchViewButton.selectedSegmentIndex = 1
-        
-        foldersListTableView.isHidden = true
-        filesСollectionView.isHidden = false
-    }
-    
-    func tableViewMode() {
-        switchViewButton.selectedSegmentIndex = 0
-        
-        filesСollectionView.isHidden = true
-        foldersListTableView.isHidden = false
-    }
-    
-    func setUpDisplayViewMode() {
-        let mode = UserDefaultService.shared.getDisplayMode(key: "key")
-        
-        self.displayMode = mode == DisplayViewMode.tableView.rawValue ? .tableView : .collectionView
-        
-        switch displayMode {
-        case .tableView:
-            tableViewMode()
-        case .collectionView:
-            collectionViewMode()
         }
     }
     
@@ -220,7 +154,7 @@ extension FilesViewController: UITableViewDelegate {
     }
     
     func handleCellTap(indexPath: IndexPath) {
-        switch appMode {
+        switch appModeManager.appMode {
         case .edit:
             handleCellTapInEditMode(indexPath: indexPath)
         case .view:
@@ -262,8 +196,6 @@ extension FilesViewController: UITableViewDelegate {
     }
 }
 
-// MARK: - Table view
-
 extension FilesViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         manager.elements.count
@@ -301,9 +233,54 @@ extension FilesViewController: UIImagePickerControllerDelegate, UINavigationCont
     }
 }
 
-extension FilesViewController: ElementsManageDelegate {
+extension FilesViewController: ElementsManagerDelegate {
     func reloadData() {
-        foldersListTableView.reloadData()
-        filesСollectionView.reloadData()
+        self.foldersListTableView.reloadData()
+        self.filesСollectionView.reloadData()
+    }
+}
+
+extension FilesViewController: DisplayModeDelegate {
+    func collectionViewMode() {
+        switchViewButton.selectedSegmentIndex = 1
+        
+        foldersListTableView.isHidden = true
+        filesСollectionView.isHidden = false
+    }
+    
+    func tableViewMode() {
+        switchViewButton.selectedSegmentIndex = 0
+        
+        filesСollectionView.isHidden = true
+        foldersListTableView.isHidden = false
+    }
+}
+
+extension FilesViewController: AppModeDelegate {
+    func viewMode() {
+        let editButton = UIBarButtonItem(systemItem: .edit, primaryAction: UIAction(handler: {_ in
+            self.appModeManager.changeAppMode(.edit)
+        }))
+        
+        let addButton = UIBarButtonItem(systemItem: .add, primaryAction: nil, menu: menuTitle)
+        
+        navigationItem.rightBarButtonItems = [editButton, addButton]
+    }
+    
+    func editMode() {
+        let cancelButton = UIBarButtonItem(systemItem: .cancel, primaryAction: UIAction(handler: {_ in
+            self.appModeManager.changeAppMode(.view)
+            self.manager.selectedElements.removeAll()
+        }))
+        
+        let delButton = UIBarButtonItem(systemItem: .trash, primaryAction: UIAction(handler: {_ in
+            if !self.manager.selectedElements.isEmpty {
+                self.deleteAffirmationAlert()
+            } else {
+                return
+            }
+        }))
+        
+        self.navigationItem.rightBarButtonItems = [cancelButton, delButton]
     }
 }

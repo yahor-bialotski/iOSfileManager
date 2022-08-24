@@ -7,6 +7,6 @@
 
 import Foundation
 
-protocol ElementsManageDelegate {
+protocol ElementsManagerDelegate {
     func reloadData()
 }
