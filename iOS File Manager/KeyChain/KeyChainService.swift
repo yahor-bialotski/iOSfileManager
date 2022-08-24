@@ -13,15 +13,15 @@ class KeyChainService {
     static let shared = KeyChainService()
     
     let keyChain = KeychainSwift()
-    var savedPassword = "newPassword"     // key "password" - 1
+    private var savedPasswordKey = "password"     // key "password" - 1
     
     private init() { }
     
     func setPassword(value: String) {
-        keyChain.set(value, forKey: savedPassword)
+        keyChain.set(value, forKey: savedPasswordKey)
     }
     
     func getPassword() -> String? {
-        keyChain.get(savedPassword)
+        keyChain.get(savedPasswordKey)
     }
 }

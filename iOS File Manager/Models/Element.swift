@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Element {
+struct Element: Equatable {
     let name: String
     let path: URL
     let type: ElementType

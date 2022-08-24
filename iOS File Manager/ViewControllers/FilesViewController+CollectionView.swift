@@ -13,10 +13,10 @@ extension FilesViewController: UICollectionViewDelegate {
     }
 
     func setUpCollectionView() {
-         filesСollectionView.delegate = self
-        filesСollectionView.dataSource  = self
+        filesСollectionView.delegate = self
+        filesСollectionView.dataSource = self
         
-        filesСollectionView.register(ElementCollectionViewCell .self, forCellWithReuseIdentifier: ElementCollectionViewCell.id )
+        filesСollectionView.register(ElementCollectionViewCell.self, forCellWithReuseIdentifier: ElementCollectionViewCell.id)
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -32,7 +32,7 @@ extension FilesViewController: UICollectionViewDelegateFlowLayout {
 
 extension FilesViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return elements.count
+        return manager.elements.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -40,8 +40,8 @@ extension FilesViewController: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
         
-        let element = elements[indexPath.row]
-        collectionViewCell.updateData(element: element)
+        let element = manager.elements[indexPath.row]
+        collectionViewCell.updateData(element: element, isSelected: manager.selectedElements.contains(where: { $0 == element }))
         
         return collectionViewCell
     }

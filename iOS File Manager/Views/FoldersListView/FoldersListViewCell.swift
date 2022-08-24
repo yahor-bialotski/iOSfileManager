@@ -15,7 +15,7 @@ class FoldersListViewCell: UITableViewCell {
     var elementImageView: UIImageView!
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-            super.init(style: style, reuseIdentifier: reuseIdentifier)
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         createElement()
     }
@@ -52,6 +52,7 @@ class FoldersListViewCell: UITableViewCell {
         
         let imageView = UIImageView()
         self.elementImageView = imageView
+        
         horizontalStack.addArrangedSubview(imageView)
         
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -64,8 +65,10 @@ class FoldersListViewCell: UITableViewCell {
         horizontalStack.addArrangedSubview(label)
     }
     
-    func updateData(element: Element) {
+    func updateData(element: Element, isSelected: Bool) {
         updateImage(element: element)
+        
+        self.backgroundColor = isSelected ? .yellow : .clear
          
         self.label.text = element.name
     }
@@ -75,7 +78,7 @@ class FoldersListViewCell: UITableViewCell {
         
         switch element.type {
         case .folder:
-            image = UIImage( systemName: "folder")
+            image = UIImage(systemName: "folder")
         case .photo:
             guard let data = try? Data(contentsOf: element.path.absoluteURL) else {
                 return
